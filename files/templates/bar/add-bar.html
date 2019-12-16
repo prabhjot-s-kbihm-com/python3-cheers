@@ -1,0 +1,291 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+{% load form_field_tag %}
+{% block header_title %}Bar{% endblock header_title %}
+
+{% block page-css %}
+<link rel="stylesheet" href="{% static 'css/libs/wizard.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/libs/timepicker.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/bar/jquery.businessHours.css' %}"/>
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.2.17/jquery.timepicker.min.css"/>
+<style>
+.pac-container {
+    z-index: 1100 !important;
+}
+
+</style>
+{% endblock page-css %}
+
+{% block content %}
+<div class="row bar_bt_edit">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <!--                <h2 class="panel-title">{% if object %}Update {% else %}Add New {% endif %}Bar</h2>-->
+            </header>
+            <div class="panel-body">
+                <div class="wizard-top-br">
+                    <div class="row">
+                        <div id="crumbs">
+                            <ul>
+                                <li class="active"><a href="#" class="active">1.Add a Bar</a></li>
+                                <li><a href="#">2.Add Drinks</a></li>
+                                <li><a href="#">3.Publish on App</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-------------------------------wizard-logo----------------------------------->
+                <form class="form-horizontal form-bordered" id="barForm" method="post" novalidate
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="wizard-logo">
+                        <label class="wizard-h4" for="image">Your Logo</label>
+                        {{form.logo.errors}}
+                        <div class="row align-items-center">
+                            <div class="col-xl-2 col-lg-4 col-md-4">
+                                <div class="logo-selct">
+                                    {% if object %}
+                                    <img src="{{object.logo_preview}}" alt="logo1" id="preview">
+                                    {% else %}
+                                    <img src="{% static 'images/dummy-logo2.jpg' %}" alt="logo1" id="preview">
+                                    {% endif %}
+                                    <i class="fa fa-edit"></i>
+                                </div>
+                                {{form.logo.errors}}
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                <div class="logo-decrip">
+                                    <h4 class="wizard-h4">Image Requirements :</h4>
+                                    <p>Horizontal</p>
+                                    <p>Best resolution : 900x600 pixels</p>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="custom-file col-md-3">
+                                    <input type="file" class="custom-file-input" id="image" aria-describedby="inputGroupFileAddon01" name="logo">
+                                    <label class="custom-file-label" for="image">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-------------------------------wizard-banner-image----------------------------------->
+                    <div class="wizard-logo wizard-banner">
+                        <label class="wizard-h4" for="image">Bar Photography(Displayed in the application)*</label>
+                        <div class="row align-items-center">
+                            <div class="col-lg-5">
+                                <div class="logo-selct">
+                                    {% if object %}
+                                    <img class="ed_logo" src="{{object.bar_photography_preview}}" alt="bar_photography"
+                                         id="preview-background">
+                                    {% else %}
+                                    <img class="ed_logo" src="{% static 'images/your-banner.jpg' %}"
+                                         alt="bar_photography"
+                                         id="preview-background">
+                                    {% endif %}
+                                    <i class="fa fa-edit"></i>
+                                </div>
+                                <div class="text-danger font-weight-bold">{{form.bar_photography.errors}}</div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="logo-decrip">
+                                    <h4 class="wizard-h4">Image Requirements :</h4>
+                                    <p>Horizontal</p>
+                                    <p>Best resolution : 492×276 pixels</p>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="custom-file col-md-3">
+                                    <input type="file" class="custom-file-input" id="bar_photography" name="bar_photography">
+                                    <label class="custom-file-label" for="bar_photography">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-------------------------------wizard-namebar----------------------------------->
+                    <div class="wizard-name">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-12 col-md-12">
+                                {% form_field_tag form.name %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="wizard-owner">
+                        <div class="row {% if not request.user.is_superuser %}d-none{% endif %}">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                                {% form_field_tag form.owner %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-------------------------------wizard-namebar----------------------------------->
+                    <div class="wizard-city">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-12 col-md-12">
+                                {% form_field_tag form.country %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-------------------------------wizard-category----------------------------------->
+                    <div class="wizard-category">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-12 col-md-12">
+                                {% form_field_tag form.bar_category %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-------------------------------wizard-map----------------------------------->
+                    <div class="wizard-map">
+                        <div class="row mb-5">
+                            <div class="col-xl-12 col-lg-12 col-md-12">
+                                {% form_field_tag form.address %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-12 col-md-12">
+                                <div class="maps" id="map" style="width: 100%; height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group d-none">
+                        <div class="col-md-6">
+                            {% form_field_tag form.latitude %}
+                        </div>
+                    </div>
+                    <div class="form-group d-none">
+                        <div class="col-md-6">
+                            {% form_field_tag form.longitude %}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="wizard-description">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                                {% form_field_tag form.description %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-12 col-md-12">
+                            <label for="id_bar_timings">Bar Timings:</label>
+                            <div id="businessHoursContainer3"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                            <label for="select-day" class="all-day">
+                                <input type="checkbox" name="select-day" value="3" id="select-day">Click here to copy
+                                saturday hours for everyday.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 d-none">
+                            {% form_field_tag form.bar_timings %}
+                        </div>
+
+                    </div>
+                    <!-------------------------------wizard-btn----------------------------------->
+
+                    <div class="wizard-btns">
+                        <div class="row justify-content-center">
+                            <a href="{% if object %}{% url 'bar:detail' object.id %}{% else %}{% url 'account:dashboard' %}{% endif %}">
+                                <button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger">Cancel</button>
+                            </a>
+                            <button type="submit" class="cancel next-stp mb-xs mt-xs mr-xs btn btn-danger" id="addBar">
+                                Next Step >>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.2.17/jquery.timepicker.min.js"></script>
+<script src="{% static 'js/bar/businessHours.js' %}"></script>
+<script src="{% static 'js/base/common.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCt1bL1Wa8Bknfk4z_ea6LMLEKwYulDbqU&libraries=places&callback=initialize"
+        async defer></script>
+<script src="{% static 'js/bar/add-bar.js' %}"></script>
+<script type="text/javascript">
+
+var b3 = $("#businessHoursContainer3");
+    var businessHoursManagerBootstrap = b3.businessHours({
+        postInit:function(){
+            b3.find('.operationTimeFrom, .operationTimeTill').timepicker({
+                'timeFormat': 'g:i A',
+                'step': 15
+            });
+
+        },
+        dayTmpl: '<div class="dayContainer" style="width: 80px;">' +
+                '<div data-original-title="" class="colorBox"><input type="checkbox" class="invisible operationState"/></div>' +
+                '<div class="weekday"></div>' +
+                '<div class="operationDayTimeContainer">' +
+                '<div class="operationTime input-group"><input type="text" name="startTime" class="mini-time form-control operationTimeFrom" value=""/></div>' +
+                '<div class="operationTime input-group"><input type="text" name="endTime" class="mini-time form-control operationTimeTill" value=""/></div>' +
+                '</div></div>'
+    });
+
+    $("#addBar").click(function() {
+        // use: businessHoursManager.serialize() to get serialized business hours in JSON
+        $("#id_bar_timings").val(JSON.stringify(businessHoursManagerBootstrap.serialize()));
+    });
+
+    $( "#preview" ).click(function() {
+      $( "#image" ).click();
+    });
+
+    $( "#preview-background" ).click(function() {
+      $( "#bar_photography" ).click();
+    });
+
+
+    {% if object %}
+        try{
+            var businessHours = jQuery.parseJSON($("#id_bar_timings").val());
+            $("#businessHoursContainer3").businessHours({
+                operationTime: businessHours,
+                dayTmpl: '<div class="dayContainer" style="width: 80px;">' +
+                '<div data-original-title="" class="colorBox"><input type="checkbox" class="invisible operationState"/></div>' +
+                '<div class="weekday"></div>' +
+                '<div class="operationDayTimeContainer">' +
+                '<div class="operationTime input-group"><input type="text" name="startTime" class="mini-time form-control operationTimeFrom" value=""/></div>' +
+                '<div class="operationTime input-group"><input type="text" name="endTime" class="mini-time form-control operationTimeTill" value=""/></div>' +
+                '</div></div>'
+
+            });
+            b3.find('.operationTimeFrom, .operationTimeTill').timepicker({
+                'timeFormat': 'g:i A',
+                'step': 15,
+                ampm: true, // FOR AM/PM FORMAT
+
+            });
+
+        }catch(e) {
+            alert("JSON non valid: " + e.message);
+        }
+    {% endif %}
+
+
+</script>
+
+{% endblock page-js %}
+

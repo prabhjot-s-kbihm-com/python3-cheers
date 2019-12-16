@@ -1,0 +1,50 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block page-css %}
+
+{% endblock page-css %}
+{% block header_title %}Countries{% endblock header_title %}
+
+{% block content %}
+<div class="row bar_inner">
+    <div class="col-md-12">
+        <section class="card">
+            
+            <div class="card-body">
+                    <header>
+                        <h3 class="card-title">Country List</h3>
+                    </header>
+                <table class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">name</th>
+                        <th scope="col">Active</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if countries %}
+                            {% for country in countries %}
+                                <tr>
+                                    <th scope="row">{{country.id}}</th>
+                                    <td>{{country.name}}</td>
+                                    <td>{{country.is_enabled}}</td>
+                                    <td><a class="btn btn-success" href="{%  url 'country:edit' country.id %}">Edit</a></td>
+                                  </tr>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No polls are available.</p>
+                        {% endif %}
+                     
+                      
+                    </tbody>
+                </table>
+            </div>
+               
+        </section>
+    </div>
+</div>
+{% endblock content %}

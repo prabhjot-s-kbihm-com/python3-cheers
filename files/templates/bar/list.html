@@ -1,0 +1,57 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block header_title %}{% if request.user.is_superuser %}Bars{% else %}My Bars{% endif %}{% endblock header_title %}
+
+{% block content %}
+<div class="row bars">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">{% if request.user.is_superuser %}Bars{% else %}My Bars{% endif %}</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    {% for bar in object_list %}
+                    <div class="col-md-6 text-center">
+                        <a class="nm" href="{% url 'bar:detail' bar.id %}"><img class="bar_logo img-fluid" src="{{bar.bar_photography.url}}" alt="{{bar.name}}"></a>
+                         <a class="trash"  id="{{bar.id}}"><i class="fa fa-trash-o"></i></a>                     
+                       <div class="detail_nm">
+                          <a class="nm" href="{% url 'bar:detail' bar.id %}"><h4>{{bar.name}}</h4></a>                         
+                       </div>
+                    </div>
+                    {%  empty %}
+                        <div class="alert" role="alert">
+                            You have no bars added yet Please click <a href="{% url 'bar:add-bar' %}">here</a>.
+                        </div>
+                {% endfor %}
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+<script>
+$('.trash').click(function(event) {
+    if (!confirm('Are you sure to delete this item?'))
+         return;
+    event.preventDefault();
+    var bar_id = $(this).attr('id');
+      $.ajax({
+        url: '/api/v0.1/bar/'+bar_id+'/',
+        type: 'delete',
+        data: {
+            id: bar_id
+        },
+        dataType: 'json',
+        success: function (data) {
+            location.reload();
+        }
+    });
+});
+
+</script>
+{% endblock page-js %}

@@ -1,0 +1,34 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+{% load form_field_tag %}
+{% block header_title %}Bar Owners{% endblock header_title %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/libs/timepicker.css' %}" />
+{% endblock page-css %}
+
+{% block content %}
+<div class="row bars">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                    <a href="{% url 'bar:add-bar-owner' %}" class="btn btn-lg btn-secondary pull-right">Add Bar Owner</a>
+                <h2 class="panel-title">Owners</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    {% for owner in object_list %}
+                    <div class="col-md-2 text-center">
+                        <a href="{% url 'bar:list' %}?owner_id={{owner.id}}">
+                            <img class="bar_logo img-fluid" src="{{owner.preview_image}}" alt="{{bar.name}}"/>
+                            <h4>{{owner.get_name|truncatechars:12}}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}

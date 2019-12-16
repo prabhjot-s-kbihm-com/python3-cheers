@@ -1,0 +1,62 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+{% load form_field_tag %}
+
+{% block header_title %}{% if object %}Update {% else %}Add New {% endif %}Drink{% endblock header_title %}
+
+{% block content %}
+<div class="row drink">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">{% if object %}Update {% else %}Add New {% endif %}Drink</h2>
+            </header>
+            <div class="panel-body">
+                <form class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-xl-2 col-lg-4 col-md-4">
+                            <div class="logo-selct drink-logo">
+                                <input type="file" class="custom-logo-input" id="image" name="image">
+                                {% if object %}
+                                    <img src="{{object.preview_image}}" alt="logo1" id="preview">
+                                {% else %}
+                                    <img src="{% static 'images/dummy-logo2.jpg' %}" alt="logo1" id="preview">
+                                {% endif %}
+                                <i class="fa fa-edit"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.name %}
+                        </div>
+                    </div>
+                    <!-- <div class="form-group {% if not request.user.is_superuser %}d-none{% endif %}">
+                        <div class="col-md-6">
+                            {% form_field_tag form.owner %}
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.description %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <a href="{% if request.GET.bar %}{% url 'bar:drinks' request.GET.bar %}{% else %}{% url 'account:dashboard' %}{% endif %}">
+                                <button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger">Cancel</button>
+                            </a>
+                            <button type="submit" class="save mb-xs mt-xs mr-xs btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+    <script src="{% static 'js/base/common.js' %}"></script>
+{% endblock page-js %}

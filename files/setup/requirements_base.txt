@@ -1,0 +1,10 @@
+Django
+django-extra-fields
+django-phonenumber-field
+django-split-settings
+djangorestframework
+Pillow
+psycopg2
+stripe
+facebook-sdk
+python-dateutil

@@ -1,0 +1,15 @@
+{% if showLabel %}
+	{% if field.field.required %}
+		<label class="" for="{{field.auto_id}}">{{ field.label|title }}</label>
+	{% else %}
+		{{ field.label_tag|title }}
+	{% endif %}
+{% endif %}
+
+{{field}}
+
+{% if field.errors %}
+	<div class="text-danger">
+		<strong>{{ field.errors|escape }}</strong>
+	</div>
+{% endif %}

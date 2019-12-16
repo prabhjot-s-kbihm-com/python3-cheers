@@ -1,0 +1,261 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block page-css %}
+<link rel="stylesheet" href="{% static 'css/libs/wizard.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/bar/add-drink-to-bar.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/bar/wizard-add-drinks.css' %}"/>
+
+<style>
+    .bar_inner_logo, #preview {
+    width: 55px;
+}
+
+
+</style>
+{% endblock page-css %}
+{% block header_title %}{{object.name}}{% endblock header_title %}
+
+{% block content %}
+<div class="row bar_inner">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <!--                 <a href="{% url 'bar:add-drink' %}?bar={{object.id}}" class="btn btn-lg btn-secondary pull-right">Add Drink</a>-->
+                <h2 class="panel-title">Add Drinks to {{form.instance}}</h2>
+            </header>
+            <div class="panel-body">
+                <div class="wizard-top-br">
+                    <div class="row">
+                        <div id="crumbs">
+                            <ul>
+                                <li><a href="#">1.Add a bar</a></li>
+                                <li><a href="#" class="active">2.Add Drinks</a></li>
+                                <li><a href="#">3.Publish on App</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% if form.errors %}
+                <div class="text-danger text-left">
+                    {% for error in form.errors %}
+                    <strong>{{ error|escape }}</strong> <br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="container add-drink1">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6 col-lg-10 col-md-12 col-sm-12 col-12">
+                            <div class="wizard-logo">
+                                <form method="post" enctype="multipart/form-data" class="drink-form">
+                                    {% csrf_token %}
+                                    <div class="slct-pic">
+                                        <img src="{% static 'images/slct-img.png' %}" id="preview" alt="image"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h4 class="wizard-h4">Upload your own drink picture, name and description :</h4>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="image" name="image"
+                                                   aria-describedby="inputGroupFileAddon01">
+                                            <label class="custom-file-label" for="image">Choose file</label>
+                                        </div>
+                                        <input type="text" class="form-control mt-4" placeholder="Name of the Drink"
+                                               name="name">
+                                        <textarea class="form-control mt-4" placeholder="Description of the Drink"
+                                                  name="description"
+                                                  rows="5"></textarea>
+                                        <button type="submit" class="btn btn-primary form-control mt-4">ADD DRINK TO
+                                            OFFER
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row justify-content-center multiple-drinks">
+                        <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12 col-12">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="d-none">
+                                    {{form.drinks}}
+                                </div>
+                                <h4 class="wizard-h4 text-center">Or Choose from a pre-selection below (can choose
+                                    multiple drinks) :</h4>
+                                <ul class="multiple-drinks d-flex flex-wrap mt-5">
+                                    {% for drink in view.get_default_drinks %}
+                                    <li>
+                                        <label for="{{drink.id}}"><img src="{{drink.image.url}}" alt="image"/></label>
+                                        <div class="custom-control custom-checkbox mt-5">
+                                            <input type="checkbox" class="custom-control-input drink-select-checkbox"
+                                                   id="{{drink.id}}" name="drink">
+                                            <label class="custom-control-label"
+                                                   for="{{drink.id}}">{{drink.name}}</label>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                    {% for drink in view.get_user_drinks %}
+                                    <li>
+                                        <label for="{{drink.id}}"><img src="{{drink.image.url}}" alt="image"/></label>
+                                        <div class="custom-control custom-checkbox mt-5">
+                                            <input type="checkbox" class="custom-control-input drink-select-checkbox" id="{{drink.id}}"
+                                                   name="drink">
+                                            <label class="custom-control-label"
+                                                   for="{{drink.id}}">{{drink.name}}</label>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-12 col-sm-12 drink-displayed mt-5" id="show-drinks">
+                            <p class="mt-5">Drinks you would like to offer will be displayed here. Please validate
+                                below.</p>
+                            <ul class="multiple-drinks d-flex flex-wrap mt-5 col-12 justify-content-center">
+                                <!--<li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/bottle-beer.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/red-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/tequila-short.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>
+                                <li>
+                                    <img src="{% static 'images/house-white-wine.png' %}" alt="image"/>
+                                    <span>house White Wine</span>
+                                </li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group drink_btn">
+                    <div class="col-md-6">
+                        <a href="{% url 'bar:update' form.instance.id %}">
+                            <button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger"><< Go Back</button>
+                        </a>
+                        <button type="submit" class="cancel next-stp mb-xs mt-xs mr-xs btn btn-danger" id="addBar">
+                            Validate >>
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+<script src="{% static 'js/base/common.js' %}"></script>
+<script src="{% static 'js/libs/jquery.blockUI.js' %}"></script>
+<script src="{% static 'js/bar/add-drink.js' %}"></script>
+<script>
+    function getSelectedDrinks(){
+        drink_ids = []
+        $('.drink-select-checkbox:checked').each(function(index, el){
+            drink_ids.push($(el).attr('id'));
+        })
+        return drink_ids;
+    }
+
+    function checkedDrinks(id, image_src, name){
+        html =`<li data-id='`+id+`'>
+                <label><img src='`+image_src+`' alt='image'></label>
+                <div>
+                    <label>`+name+`</label>
+                </div>
+            </li>`
+        $("#show-drinks ul").append(html);
+    }
+
+    function removeElementByID(id){
+        $("#show-drinks ul").find("li[data-id='" + id + "']").remove();
+    }
+
+
+    function processItem(item){
+
+        var inputValue = $(item).attr("id");
+        var image = $(item).closest('li').find("img").attr("src")
+        var name = $(item).parent().find('label').text();
+        if ($(item).prop('checked')){
+            checkedDrinks(inputValue, image, name);
+        } else {
+            removeElementByID(inputValue);
+        }
+     }
+
+     $( document ).ready(function() {
+        $(document).on('change', '.drink-select-checkbox', function() {
+            $('#id_drinks').val(getSelectedDrinks());
+        });
+
+        // mark the items selected which comes from backend in the multiselect hidden field #id_drinks
+        var drinks = $('#id_drinks').val();
+        $(drinks).each(function(index, id){
+            $('[id=' + id + ']').attr('checked', true);
+            // Show as chosen items
+            processItem($("#"+id));
+        });
+
+
+        // On item select/unselect add/remove to chosen items respectively
+        $('input[type="checkbox"]').click(function(){
+            processItem($(this));
+         });
+
+
+
+            // Get list of checked values
+        var selected = [];
+<!--        $("input[name='drink']:checked").each(function() {-->
+<!--            var selectedDrink = $(this).attr('id');-->
+<!--            alert(selectedDrink);-->
+<!--        });-->
+
+
+    });
+
+
+
+
+</script>
+{% endblock page-js %}

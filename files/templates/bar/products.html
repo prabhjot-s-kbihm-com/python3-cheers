@@ -1,0 +1,58 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block header_title %}My Drinks{% endblock header_title %}
+
+{% block content %}
+<div class="row bars">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">My Drinks</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    {% for drink in object_list %}
+                    <div class="col-md-2 text-center">
+                        <a href="{% url 'bar:drink-update' drink.id %}"><img class="bar_logo" src="{{drink.preview_image}}" alt="{{drink.name}}"></a>
+                        <div class="detail_nm">
+                          <a href="{% url 'bar:drink-detail' drink.id %}"><h4>{{drink.name}}</h4></a>
+                          {% if not drink.is_default %}<a class="trash" id="{{drink.id}}"><i class="fa fa-trash-o"></i></a>{% endif %}
+                       </div>
+                    </div>
+                    {%  empty %}
+                        <div class="alert" role="alert">
+                            You have no drinks added yet Please click <a href="{% url 'bar:add-drink' %}">here</a>.
+                        </div>
+                {% endfor %}
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+<script>
+$('.trash').click(function(event) {
+    if (!confirm('Are you sure to delete this item?'))
+         return;
+    event.preventDefault();
+    var drink_id = $(this).attr('id');
+      $.ajax({
+        url: '/api/v0.1/bar/products/'+drink_id+'/',
+        type: 'delete',
+        data: {
+            id: drink_id
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.info(data);
+            location.reload();
+        }
+    });
+});
+
+</script>
+{% endblock page-js %}

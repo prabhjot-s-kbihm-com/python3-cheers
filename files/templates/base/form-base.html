@@ -1,0 +1,27 @@
+{% extends 'base/skeleton.html' %}
+{% load staticfiles %}
+
+{% block page-body %}
+
+<section role="main" class="content-body">
+    {% block messages %}
+        {% include 'base/messages.html' %}
+    {% endblock messages %}
+
+    {% block header %}
+    <header class="page-header">
+        <h2>{% block header_title %}Dashboard{% endblock header_title %}</h2>
+    </header>
+    {% endblock header %}
+
+    {% block content %}
+    {% endblock content %}
+    <!-- end: page -->
+
+</section>
+
+
+{% endblock page-body %}
+
+{% block page-js %}
+{% endblock page-js %}

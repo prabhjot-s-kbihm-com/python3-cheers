@@ -1,0 +1,207 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+{% load form_field_tag %}
+{% block header_title %}{{object.name}} - Display preview : all bugged.{% endblock header_title %}
+{% block page-css %}
+<style type="text/css">
+ .wizard-logo .title h4{
+    text-align: center;
+    color: #383f48;
+    font-size: 22px;
+}
+.wizard-logo .title p {
+    text-align: center;
+    color: #383f48;
+}
+.image_section img {
+    width: 100%;
+}
+.bar_slides {
+   background-color: #28373a;
+}
+.bar_levels h2 {
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: #fff;
+    margin: 15px;
+    position: relative;
+}
+.bar_levels h2:after {
+    position: absolute;
+    content: '';
+    background: #fff;
+    width: 55px;
+    height: 9px;
+    left: 0;
+    bottom: -15px;
+    border-radius: 5px;
+}
+.bar_levels p {
+    color: #fff;
+    margin: 28px 16px 20px;
+}
+ul.c_button li {
+    background: #f7bc4e;
+    display: inline-block;
+    padding: 4px 10px;
+    color: #2e3c40;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+ul.c_button {
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+.info h3 {
+    text-align: center;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-top: 45px;
+}
+ul.drink_choice li {
+    display: inline-block;
+    list-style: none;
+    margin: 25px 0;
+    padding: 0 17px;
+    width: 32%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+ul.drink_choice {
+    padding-left: 0;
+}
+.drink_choice img {
+    margin-bottom: 20px;
+}
+.bar_display {
+    padding: 0 !important;
+}
+.drink_choice img {
+    width: auto;
+}
+li.arrow {
+    position: relative;
+}
+
+ul.drink_choice li:first-child, ul.drink_choice li:last-child {
+    opacity: 0.6;
+}
+li.arrow:after {
+    position: absolute;
+    content: '';
+    background-image: url(/static/images/left-arrow.png);
+    width: 20px;
+    height: 29px;
+    top: 95px;
+    left: -10px;
+    background-repeat: no-repeat;
+}
+li.arrow:before {
+    position: absolute;
+    content: '';
+    background-image: url(/static/images/right-arrow.png);
+    width: 50px;
+    height: 75px;
+    top: 95px;
+    right: -30px;
+    background-repeat: no-repeat;
+}
+button.cancel.btn-danger {
+    font-size: 18px;
+    font-weight: 500;
+}
+button.next-stp {
+    color: #383f48;
+}
+
+@media only screen and (max-width: 600px) {
+	.c_button li {
+	    margin-bottom: 10px;
+	}
+	.info h3 {
+    margin-top: 25px;
+    font-size: 20px;
+  }
+  ul.drink_choice li{
+  	width: 100%;
+  }
+}
+
+</style>
+{% endblock page-css %}
+{% block content %}
+<div class="wizard-top-br">
+                    <div class="row">
+                    <div id="crumbs">
+                        <ul>
+                            <li><a href="#">1.Add a bar</a></li>
+                            <li><a href="#">2.Add Drinks</a></li>
+                            <li><a href="#" class="active">3.Publish on App</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    <div class="container add-drink1">
+           	<div class="row justify-content-center">
+           	 <div class="col-xl-6 col-lg-10 col-md-12 col-sm-12 col-12">
+                <div class="wizard-logo">
+					  <div class="title">
+					  	 <h4 class="wizard-h4">Below is your Bar page on the application :</h4>
+					  	 <p> (Buttons are not clickable, this is just a preview)</p>
+					  </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-10 col-md-12 col-sm-12 col-12 bar_display">
+                <div class="image_section">
+					 <img src="{{object.bar_photography.url}}">
+                </div>
+            </div>
+          </div>
+
+           <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-10 col-md-12 col-sm-12 col-12 bar_slides">
+                <div class="bar_levels">
+				  <h2>{{object.name}}</h2>
+				  <p>{{object.address}}</p>
+				  <ul class="c_button">
+				  	<li><img src="{% static 'images/check-in.png' %}" alt="Google Maps"> Google Maps</li>
+                  	<li><img src="{% static 'images/time.png' %}" alt="Heures"> Heures d’ouverture</li>
+                  	<li><img src="{% static 'images/i-icon.png' %}" alt="d’infos"> + d’infos</li>
+				  </ul>
+				   <div class="info">
+					     <h3>Choose your free glass</h3>
+					     <div class="row">
+                             {% for drink in object.drinks.all|slice:"0:3" %}
+                                <div class="col-md-6 mb-xs">
+                                    <img src="{{drink.image.url}}" class="img-fluid"/> 
+                                    <h4>{{drink.name}}</h4>
+                                </div>
+                             {% endfor %}
+                         </div>
+				   </div>
+                </div>
+            </div>
+          </div>
+
+    <form method="post">
+    {% csrf_token %}
+        <input type="checkbox" name="publish" id="id_publish" checked value="true" class="d-none">
+    <div class="form-group drink_btn">
+        <div class="col-md-6">
+            <a href="{% url 'bar:drinks' form.instance.id %}">
+                <button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger"><< Go back</button>
+            </a>
+            <button type="submit" class="cancel next-stp mb-xs mt-xs mr-xs btn btn-danger" id="addBar">Publish</button>
+        </div>
+    </div>
+</form>
+</div>
+{% endblock content %}

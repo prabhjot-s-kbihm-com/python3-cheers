@@ -1,0 +1,112 @@
+<aside id="sidebar-left" class="sidebar-left">
+
+    <div class="sidebar-header">
+        <div class="sidebar-title">
+            Navigation
+        </div>
+        <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+             data-fire-event="sidebar-left-toggle">
+            <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+        </div>
+    </div>
+
+    <div class="nano">
+        <div class="nano-content">
+            <nav id="menu" class="nav-main" role="navigation">
+                <ul class="nav nav-main">
+                    <li class="nav-active">
+                        <a href="{% url 'account:profile' %}">
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <!--<li class="nav-parent">
+                        <a>
+                            <span>My Bars</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a href="#">
+                                    Demo
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Demo
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Demo
+                                </a>
+                            </li>
+                        </ul>
+                    </li>-->
+                    {% if request.user.is_superuser %}
+                        <li>
+                        <a href="{%  url 'bar:owners' %}">
+                            <span>Bar Owners</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{%  url 'bar:products' %}">
+                            <span>Drinks</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{%  url 'bar:list' %}">
+                            <span>My Bars</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{%  url 'bar:products' %}">
+                            <span>My Drinks</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a href="{%  url 'bar:add-bar' %}">
+                            <span>Add a bar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{%  url 'bar:add-drink' %}">
+                            <span>Add a drink</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>Reports / Statics</span>
+                        </a>
+                    </li>
+                    <li class="nav-parent">
+                        <a>
+                            <span>Help / Support</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a href="ui-elements-typography.html">
+                                    Demo
+                                </a>
+                            </li>
+                            <li>
+                                <a href="ui-elements-icons.html">
+                                    Icons
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{%  url 'promotions:index' %}">
+                            <span>Promotions</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+        </div>
+
+    </div>
+
+</aside>

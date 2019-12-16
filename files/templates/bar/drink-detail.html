@@ -1,0 +1,32 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block header_title %}{{object.name}}{% endblock header_title %}
+
+{% block content %}
+<div class="row bar_inner">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Detail</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row edit_bar">
+                    <div class="col-md-11">
+                        <img class="bar_inner_logo" src="{{object.preview_image}}" alt="user">
+                        <h6>{{object.name}}</h6>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="{% url 'bar:drink-update' object.id %}">
+                            <button type="button" class="edit mb-xs mt-xs mr-xs btn btn-danger"><i
+                                    class="fa fa-edit"></i>
+                            </button>
+                        </a>
+                    </div>
+                    <p>{{object.description}}</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}

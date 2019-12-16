@@ -1,0 +1,102 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block header_title %}{{object.name}}{% endblock header_title %}
+
+{% block content %}
+<div class="row bar_inner">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Detail</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row edit_bar">
+                    <div class="col-md-3">
+                        <img class="bar_inner_logo" src="{{object.logo_preview}}" alt="user">
+                        <p class="name">{{object.name}}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <p>{{object.description}}</p>
+                        <p>
+                            <span class="text-left">Bar Timings:</span>
+                        </p>
+                        <table class="table table-bar">
+                            <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Timings</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for timing in object.bar_timings %}
+                            <tr>
+                                <td>{{timing.day}}</td>
+
+                                <td>
+                                    {% if timing.isActive %}
+                                    {{timing.timeFrom}} to {{timing.timeTill}}
+                                    {% else %}
+                                        closed
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-md-1">
+                        <a href="{% url 'bar:update' object.id %}">
+                            <button type="button" class="edit mb-xs mt-xs mr-xs btn btn-danger"><i
+                                    class="fa fa-edit"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row edit_bar">
+                    <div class="col-md-11 mb-5">
+                        <h3>Drinks</h3>
+                    </div>
+                    <div class="col-md-1 mb-5">
+                        <a href="{% url 'bar:drinks' object.id %}">
+                            <button type="button" class="edit mb-xs mt-xs mr-xs btn btn-danger"><i
+                                    class="fa fa-edit"></i>
+                            </button>
+                        </a>
+                    </div>
+
+                    <div class="added row">
+                        <div class="container drink-contain">
+                            <div class="row justify-content-center">
+                                {% for drink in object.drinks.all %}
+                                <div class="col-md-2 dnk">
+                                    <img class="drink-img bar_logo" src="{{drink.preview_image}}" alt="bar2">
+                                </div>
+                                {% empty %}
+                                <div class="alert alert-dark" role="alert">
+                                    You have no drinks added yet Please click <a
+                                        href="{% url 'bar:drinks' object.id %}">here</a>.
+                                </div>
+                                {% endfor %}
+                                {% if object.drinks.count > 0 %}
+
+                                <div class="col-md-2 dnk add-dr">
+                                    <a href="{% url 'bar:drinks' object.id %}">
+                                        <div class="bdr-add">
+                                            <span class="edit mb-xs mt-xs mr-xs"><i class="fa fa-plus"></i></span>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}

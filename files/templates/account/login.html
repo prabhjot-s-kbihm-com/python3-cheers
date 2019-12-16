@@ -1,0 +1,94 @@
+{% extends 'base/skeleton.html' %}
+
+{% block left-sidebar %}{% endblock left-sidebar %}
+{% block right-sidebar %}{% endblock right-sidebar %}
+{% block navbar %}{% endblock navbar %}
+
+{% load staticfiles %}
+{% load form_field_tag %}
+
+{% block body-parent-class %}{% endblock body-parent-class %}
+{% block page-body %}
+{% block messages %}
+        {% include 'base/messages.html' %}
+{% endblock messages %}
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/static/images/bg-01.jpg');">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" method="post">
+                {% csrf_token %}
+
+                <span class="login100-form-logo">
+						<i class="zmdi zmdi-landscape"></i>
+					</span>
+
+                <span class="login-form p-b-34 p-t-27">
+                    <img src="{% static 'images/logo.png' %}" width="250px">
+                </span>
+
+                {% if form.errors %}
+                <div class="mt-4">
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="wrap-input100 validate-input" data-validate="Enter email">
+                    <input class="input100" type="text" name="email" placeholder="Email">
+                    <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    {% if form.email.errors %}
+                    <div class="text-danger text-left">
+                        {% for error in form.email.errors %}
+                        <strong>{{ error|escape }}</strong> <br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <input class="input100" type="password" name="password" placeholder="Password">
+                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    {% if form.password.errors %}
+                    <div class="text-danger text-left">
+                        {% for error in form.password.errors %}
+                        <strong>{{ error|escape }}</strong><br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="contact100-form-checkbox col-md-6">
+                        <!-- <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                         <label class="label-checkbox100" for="ckb1">
+                             Remember me
+                         </label>-->
+                    </div>
+                    <div class="col-md-6 text-right">
+
+                        <label class="forgot" for="ckb2">
+                            <a href="{% url 'account:forgot-password' %}">Forget Password</a>
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="mb-xs mt-xs mr-xs btn btn-warning" type="submit">
+                        Login
+                    </button>
+                </div>
+
+                <div class="text-right p-t-50">
+                </div>
+                <div class="text-right">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock page-body %}

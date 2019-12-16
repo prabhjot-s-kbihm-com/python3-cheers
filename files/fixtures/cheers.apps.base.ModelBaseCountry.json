@@ -1,0 +1,1 @@
+[{"model": "base.modelbasecountry", "pk": 1, "fields": {"name": "Bangkok", "is_enabled": true}}, {"model": "base.modelbasecountry", "pk": 2, "fields": {"name": "Paris", "is_enabled": true}}]

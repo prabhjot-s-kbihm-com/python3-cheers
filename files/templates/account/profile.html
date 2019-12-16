@@ -1,0 +1,83 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+{% load form_field_tag %}
+{% block header_title %}Profile{% endblock header_title %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+{% endblock page-css %}
+
+{% block content %}
+<div class="row drink">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Profile</h2>
+            </header>
+            <div class="panel-body">
+                <form class="form-horizontal form-bordered" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-xl-2 col-lg-4 col-md-4">
+                            <div class="logo-selct">
+                                <input type="file" class="custom-logo-input" id="image" name="image">
+                                {% if request.user.avatar %}
+                                    <img class="usr" src="{{request.user.avatar.url}}" alt="user" id="preview">
+                                {% else %}
+                                    <img class="usr" src="{% static 'images/dummy-logo.jpg' %}" alt="user">
+                                {% endif %}
+                                <i class="fa fa-edit"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.name %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.email %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.phone_number %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.address %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% form_field_tag form.date_of_birth %}
+                        </div>
+                    </div>                   
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <a href="{% url 'account:dashboard' %}"><button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger">Cancel</button></a>
+                            <button type="submit" class="save mb-xs mt-xs mr-xs btn btn-success next-stp">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+{% block page-js %}
+<script src="{% static 'js/base/common.js' %}"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $(document).ready(function() {
+    $('#id_date_of_birth').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: '+0d',
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
+{% endblock page-js %}

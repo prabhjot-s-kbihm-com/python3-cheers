@@ -1,0 +1,103 @@
+{% extends 'base/form-base.html' %}
+{% load staticfiles %}
+
+{% block page-css %}
+<link rel="stylesheet" href="{% static 'css/libs/wizard.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/bar/add-drink-to-bar.css' %}"/>
+{% endblock page-css %}
+{% block header_title %}{{object.name}}{% endblock header_title %}
+
+{% block content %}
+<div class="row bar_inner">
+    <div class="col-md-12">
+        <section class="panel">
+            <header class="panel-heading">
+                 <a href="{% url 'bar:add-drink' %}?bar={{object.id}}" class="btn btn-lg btn-secondary pull-right">Add Drink</a>
+                <h2 class="panel-title">Add Drinks to {{form.instance}}</h2>
+            </header>
+            <div class="panel-body">
+                <div class="wizard-top-br">
+                    <div class="row">
+                    <div id="crumbs">
+                        <ul>
+                            <li><a href="#">1.Add a bar</a></li>
+                            <li><a href="#" class="active">2.Add Drinks</a></li>
+                            <li><a href="#">3.Publish on App</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                {% if form.errors %}
+                <div class="text-danger text-left">
+                    {% for error in form.errors %}
+                    <strong>{{ error|escape }}</strong> <br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="col-md-12 custom-img-checkbox">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-none">
+                            {{form.drinks}}
+                        </div>
+                    <div class="row">
+                        {% for drink in view.get_drinks %}
+                            <div class="col-md-2">
+                                <div class="img-check-otr">
+                                    <div class="img-check">
+                                        <img src="{{drink.preview_image}}" class="checked-image">
+                                        <input class="drink-select-checkbox" type="checkbox" data-id="{{drink.id}}" name="drink">
+                                        <span><i class="fa fa-check"></i></span>
+                                    </div>
+                                    <p>{{drink.name}}</p>
+                                </div>
+                            </div>
+                            {%  empty %}
+                            <div class="alert" role="alert">
+                                You have no drink added yet Please click <a href="{% url 'bar:add-drink' %}?bar={{object.id}}">here</a>.
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group drink_btn">
+                        <div class="col-md-6">
+                            <a href="{% url 'bar:update' form.instance.id %}"><button type="button" class="cancel mb-xs mt-xs mr-xs btn btn-danger"><< back</button></a>
+                            <button type="submit" class="cancel next-stp mb-xs mt-xs mr-xs btn btn-danger" id="addBar">Next Step >></button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page-js %}
+<script>
+
+
+    function getSelectedDrinks(){
+        drink_ids = []
+        $('.drink-select-checkbox:checked').each(function(index, el){
+            drink_ids.push($(el).attr('data-id'));
+        })
+        return drink_ids;
+    }
+     $( document ).ready(function() {
+    $(document).on('change', '.drink-select-checkbox', function() {
+        $('#id_drinks').val(getSelectedDrinks());
+    });
+
+
+        drinks = $('#id_drinks').val();
+        $(drinks).each(function(index, el){
+            console.log(index, el)
+            console.log($('input[name="drink[]"][data-id=' + el + ']'))
+            $('[data-id=' + el + ']').attr('checked', true);
+        });
+    });
+
+
+
+</script>
+{% endblock page-js %}

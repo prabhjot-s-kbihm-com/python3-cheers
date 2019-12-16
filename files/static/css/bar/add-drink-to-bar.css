@@ -1,0 +1,108 @@
+.topsearch {
+  overflow: hidden;  
+   text-align: left;
+}
+
+.topsearch a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topsearch input[type=text] {
+    border: 1px solid #ccc !important;
+    border-radius: 5px 0 0;
+	font-size: 16px !important;
+	padding: 6px;
+    margin-top: 8px; 
+}
+
+.topsearch .search-container button {  
+  padding: 7px 10px; 
+  background: #f7bc4e;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topsearch .search-container button:hover {
+  background: #ccc;
+}
+
+.custom-img-checkbox
+{
+   margin-top: 50px;
+}
+.custom-img-checkbox .img-check img {
+   width: 100%;
+   min-height: 150px;
+   height: 150px;
+}
+.custom-img-checkbox p{
+ text-align: center;
+}
+.img-check {
+ position: relative;
+ overflow: hidden;
+ height: auto;
+}
+.img-check input {
+ position: absolute;
+ top: 0;
+ width: 100%;
+ height: 100%;
+ opacity: 0;
+ z-index:99;
+ cursor: pointer;
+}
+.img-check-otr span {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ font-size: 70px;
+ opacity: 0;
+ transition: all 0.5s
+}
+.img-check input:checked + span {
+ opacity: 1;
+}
+
+.img-check:hover span {
+ opacity: 1;
+}
+.img-check:hover img {
+ filter: blur(1px);
+}
+.img-check i.fa.fa-check {
+    color: #f7bc4e;
+    font-size: 40px;
+}
+.img-check-otr {
+    margin-bottom: 20px;
+}
+.img-check-otr p {
+    margin-top: 10px;
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+  .topnav .search-container {
+    float: none;
+  }  
+  .topsearch input[type=text] {
+    border: 1px solid #ccc;  
+  }
+}
+
+@media screen and (max-width: 999px) {
+	.col-md-6.topsearch {
+    max-width: 100%;
+    flex: inherit;
+}
+	.custom-img-checkbox .col-md-2 {
+		max-width: 50% !important;
+		flex: inherit;
+	}
+}
